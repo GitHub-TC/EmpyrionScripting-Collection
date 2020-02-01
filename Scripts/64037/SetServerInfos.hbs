@@ -1,0 +1,14 @@
+{{#devices E.S 'MasterServerInfosGer'}}
+{{#writefile '..\ServerInfos' 'ServerInfosGer.txt'}}
+{{#gettext .0}}
+{{.}}
+{{/gettext}}
+{{/writefile}}
+{{/devices}}
+{{#devices E.S 'MasterServerInfosEng'}}
+{{#writefile '..\ServerInfos' 'ServerInfosEng.txt'}}
+{{#gettext .0}}
+{{.}}
+{{/gettext}}
+{{/writefile}}
+{{/devices}}

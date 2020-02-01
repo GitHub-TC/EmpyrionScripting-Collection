@@ -1,0 +1,24 @@
+{{#readfile '..\ServerInfos' 'ServerInfosGer.txt'}}
+{{#devices @root.E.S 'ServerInfosGer*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{#if .1}}
+{{setfontsize ../. .1}}
+{{/if}}
+{{/split}}
+{{settext . (concat ../../. '\n')}}
+{{/each}}
+{{/devices}}
+{{/readfile}}
+{{#readfile '..\ServerInfos' 'ServerInfosEng.txt'}}
+{{#devices @root.E.S 'ServerInfosEng*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{#if .1}}
+{{setfontsize ../. .1}}
+{{/if}}
+{{/split}}
+{{settext . (concat ../../. '\n')}}
+{{/each}}
+{{/devices}}
+{{/readfile}}

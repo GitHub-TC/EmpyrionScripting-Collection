@@ -1,0 +1,9 @@
+{{#devices @root.E.S 'ReceiveData-*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{#readfile @root.MainScriptPath (concat '..\\DataTransfer\\Fac-' @root.E.Faction.Id '\\Data-' .1 '.txt')}}
+{{settext ../../. (concat . '\n')}}
+{{/readfile}}
+{{/split}}
+{{/each}}
+{{/devices}}

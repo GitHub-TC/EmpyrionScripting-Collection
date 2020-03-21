@@ -1,4 +1,7 @@
 
 Configuration.json
 Teleporter/**
-ScriptTracking/**
+DataTransfer
+ScriptTracking
+ServerInfos
+PlayfieldInfos

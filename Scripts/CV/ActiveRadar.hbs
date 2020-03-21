@@ -1,0 +1,38 @@
+{{#devices @root.E.S 'Scan-*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{set 'RadarPos' .1}}
+{{set 'Size' .2}}
+{{set 'ScrollLines' .3}}
+{{/split}}
+{{#settextblock .}}
+<size={{@root.Data.Size}}>
+{{#split @root.Data.RadarPos ','}}
+{{#block @root.E.S .0 .1 .2}}
+{{#test Id in '289'}}
+{{#scroll @root.Data.ScrollLines 1}}
+{{#entitiesbyname '*' 20000 'Ast*'}}
+{{#each .}}
+{{#test Faction.Group in
+ 'Alien,Zirax,Admin,NoFaction'}}
+{{format Name '<color=green>{0,-20}</color> '}}
+{{~format Pos.X 'X:<color=purple>{0,-5:0}</color> '}}
+{{~format Pos.Y 'Y:<color=purple>{0,-5:0}</color> '}}
+{{~format Pos.Z 'Z:<color=purple>{0,-5:0}</color> '}}
+{{~distance Pos @root.E.Pos '<color=yellow>△={0:0}</color>'}}
+{{/test}}
+{{/each}}
+{{/entitiesbyname}}
+{{/scroll}}
+{{else}}
+No radar found at {{@root.Data.RadarPos}}
+{{/test}}
+{{/block}}
+{{/split}}
+ 
+<color=#88888840>Time on board: {{datetime}}
+{{@root.Version}}</color>
+</size>
+{{/settextblock}}
+{{/each}}
+{{/devices}}

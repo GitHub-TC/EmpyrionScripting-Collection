@@ -1,6 +1,6 @@
-{{#devices @root.E.S 'Scan-*'}}
+{{#devices @root.E.S 'Scan=*'}}
 {{#each .}}
-{{#split CustomName '-'}}
+{{#split CustomName '='}}
 {{set 'RadarPos' .1}}
 {{set 'Size' .2}}
 {{set 'ScrollLines' .3}}

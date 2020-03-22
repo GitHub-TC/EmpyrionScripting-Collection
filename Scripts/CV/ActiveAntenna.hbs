@@ -1,4 +1,4 @@
-{{set 'AntennaIds' '1365,1877,1878,1879,1880,1880,1881,1882,1883,1884'}}
+{{set 'AntennaIds' '1365,1877,1878,1879,1880,1880,1881,1882,1883,1884,262'}}
 
 {{#devices @root.E.S 'EnemyScan=*'}}
 {{#each .}}
@@ -21,16 +21,16 @@
 {{#block @root.E.S .0 .1 .2}}
 {{#test Id in @root.Data.AntennaIds}}
 {{#scroll @root.Data.ScrollLines 1}}
-{{#entitiesbyname '*' 20000 'BA,CV,SV,HV,EnemyDrone,TroopTransport'}}
-{{#each .}}
-{{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction,*'}}
+{{#entitiesbyname '*' 5000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
+{{#sortedeach . 'Distance'}}
+{{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction'}}
 {{format Name '<color=green>{0,-20}</color> '}}
 {{~format Pos.X 'X:<color=red>{0,-5:0}</color> '}}
 {{~format Pos.Y 'Y:<color=red>{0,-5:0}</color> '}}
 {{~format Pos.Z 'Z:<color=red>{0,-5:0}</color> '}}
-{{~distance Pos @root.E.Pos '<color=yellow>△={0:0}</color>'}}
+{{~format Distance '<color=yellow>△={0:0}</color>'}}
 {{/test}}
-{{/each}}
+{{/sortedeach}}
 {{/entitiesbyname}}
 {{/scroll}}
 {{else}}

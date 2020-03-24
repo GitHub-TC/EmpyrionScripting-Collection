@@ -15,6 +15,7 @@
 {{set 'ScrollLines' '100'}}
 {{/if}}
 {{/split}}
+{{set 'Count' 0}}
 {{#settextblock .}}
 <size={{@root.Data.Size}}>Enemy scan:
 {{#split @root.Data.RadarPos ','}}
@@ -24,7 +25,8 @@
 {{#entitiesbyname '*' 5000 'CV,EnemyDrone,TroopTransport'}}
 {{#sortedeach . 'Distance'}}
 {{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction'}}
- - {{format Name '<color=green>{0,-20}</color> '}}
+{{~math @root.Data.Count '+' '1'}}{{set 'Count' .}}{{/math}}
+{{~format @root.Data.Count ' {0,2}'}} : {{format Name '<color=green>{0,-20}</color> '}}
 {{~format Pos.X 'X:<color=red>{0,-5:0}</color> '}}
 {{~format Pos.Y 'Y:<color=red>{0,-5:0}</color> '}}
 {{~format Pos.Z 'Z:<color=red>{0,-5:0}</color> '}}

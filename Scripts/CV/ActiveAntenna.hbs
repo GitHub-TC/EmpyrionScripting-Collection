@@ -20,11 +20,11 @@
 {{#split @root.Data.RadarPos ','}}
 {{#block @root.E.S .0 .1 .2}}
 {{#test Id in @root.Data.AntennaIds}}
-{{#scroll @root.Data.ScrollLines 1}}
+{{#scroll @root.Data.ScrollLines 1 5}}
 {{#entitiesbyname '*' 5000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
 {{#sortedeach . 'Distance'}}
 {{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction'}}
-{{format Name '<color=green>{0,-20}</color> '}}
+ - {{format Name '<color=green>{0,-20}</color> '}}
 {{~format Pos.X 'X:<color=red>{0,-5:0}</color> '}}
 {{~format Pos.Y 'Y:<color=red>{0,-5:0}</color> '}}
 {{~format Pos.Z 'Z:<color=red>{0,-5:0}</color> '}}
@@ -41,10 +41,10 @@ No Antenna found at {{@root.Data.RadarPos}}
 ({{.}}) {{i18n . 'English'}} / {{i18n . 'Deutsch'}}
 {{/each}}
 {{/split}}
+ 
 {{/test}}
 {{/block}}
 {{/split}}
- 
 <color=#33888890>Current Position: {{@root.E.Pos}}
 <color=#88888840>Time on board: {{datetime}}
 {{@root.Version}}</color>

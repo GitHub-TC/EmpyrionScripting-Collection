@@ -1,6 +1,6 @@
-{{set 'RadarIds' '289'}}
+{{set 'AntennaIds' '1365,1877,1878,1879,1880,1880,1881,1882,1883,1884,262'}}
 
-{{#devices @root.E.S 'Scan=*'}}
+{{#devices @root.E.S 'EnemyScan=*'}}
 {{#each .}}
 {{#split CustomName '='}}
 {{set 'RadarPos' .1}}
@@ -16,12 +16,12 @@
 {{/if}}
 {{/split}}
 {{#settextblock .}}
-<size={{@root.Data.Size}}>Asteroid scan:
+<size={{@root.Data.Size}}>Enemy scan:
 {{#split @root.Data.RadarPos ','}}
 {{#block @root.E.S .0 .1 .2}}
-{{#test Id in @root.Data.RadarIds}}
+{{#test Id in @root.Data.AntennaIds}}
 {{#scroll @root.Data.ScrollLines 1 5}}
-{{#entitiesbyname '*' 10000 'Ast*'}}
+{{#entitiesbyname '*' 5000 'CV,EnemyDrone,TroopTransport'}}
 {{#sortedeach . 'Distance'}}
 {{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction'}}
  - {{format Name '<color=green>{0,-20}</color> '}}
@@ -34,9 +34,9 @@
 {{/entitiesbyname}}
 {{/scroll}}
 {{else}}
-No radar found at {{@root.Data.RadarPos}}
+No Antenna found at {{@root.Data.RadarPos}}
   
-{{#split @root.Data.RadarIds ','}}
+{{#split @root.Data.AntennaIds ','}}
 {{#each .}}
 ({{.}}) {{i18n . 'English'}} / {{i18n . 'Deutsch'}}
 {{/each}}

@@ -17,7 +17,7 @@
 {{/split}}
 {{set 'Count' 0}}
 {{#settextblock .}}
-<size={{@root.Data.Size}}>Enemy scan:
+<size={{@root.Data.Size}}>Enemy scan ({{@root.P.Name}}): 
 {{#split @root.Data.RadarPos ','}}
 {{#block @root.E.S .0 .1 .2}}
 {{#test Id in @root.Data.AntennaIds}}

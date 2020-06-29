@@ -20,8 +20,8 @@
 {{#split @root.Data.RadarPos ','}}
 {{#block @root.E.S .0 .1 .2}}
 {{#test Id in @root.Data.AntennaIds}}
-{{#scroll @root.Data.ScrollLines 1}}
-{{#entitiesbyname '*' 5000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
+{{#scroll @root.Data.ScrollLines 1 5}}
+{{#entitiesbyname '*' 10000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
 {{#sortedeach . 'Distance'}}
 {{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction'}}
 {{format Name '<color=green>{0,-20}</color> '}}<indent=40%>

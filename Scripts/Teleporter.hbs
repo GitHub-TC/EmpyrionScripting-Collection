@@ -1,18 +1,21 @@
 {{#test @root.E.Faction.Id ge 0}}
-{{#teleporters @root.E.S '*'}}
+{{#teleporters @root.E.S 'Beam-*'}}
 {{#each .}}
+{{set 'TeleporterName' CustomName}}
 {{#split CustomName '@'}}
-{{#writefile @root.MainScriptPath (concat '..\\Teleporter\\Fac-' @root.E.Faction.Id '\\Data-' @root.E.Id '.txt')}}
-{{.0}}@{{@root.E.Id}}:{{@root.P.Name}}
+{{set 'TeleporterTarget' .0}}
+{{set 'TeleporterTargetId' .1}}
+{{#writefile @root.MainScriptPath (concat '..\\Teleporter\\Fac-' @root.E.Faction.Id '\\Data-' @root.Data.TeleporterTarget '-' @root.E.Id '.txt')}}
+{{.0}}@{{@root.E.Id}}:{{@root.P.Name}}@{{@root.P.SolarSystemName}}
 {{#if @root.P.IsPvP}}
-{{@root.E.Name}} <color=purple>({{@root.E.EntityType}})</color> -> <color=red>{{@root.P.Name}}</color>
+{{@root.E.Name}} <color=purple>({{@root.E.EntityType}})</color> -> <color=red>{{@root.P.Name}} ({{@root.P.SolarSystemName}})</color>
 {{else}}
-{{@root.E.Name}} <color=purple>({{@root.E.EntityType}})</color> -> <color=green>{{@root.P.Name}}</color>
+{{@root.E.Name}} <color=purple>({{@root.E.EntityType}})</color> -> <color=green>{{@root.P.Name}} ({{@root.P.SolarSystemName}})</color>
 {{/if}}
 {{datetime}}
 {{/writefile}}
-{{#readfile @root.MainScriptPath (concat '..\\Teleporter\\Fac-' @root.E.Faction.Id '\\Data-' .1 '.txt')}}
-{{#devices @root.E.S (concat 'Info:' CustomName '*')}}
+{{#readfile @root.MainScriptPath (concat '..\\Teleporter\\Fac-' @root.E.Faction.Id '\\Data-' @root.Data.TeleporterTarget '-' @root.Data.TeleporterTargetId '.txt')}}
+{{#devices @root.E.S (concat 'Info:' @root.Data.TeleporterName '*')}}
 {{#each .}}
 {{#settextblock .}}
 <align=center>{{../../../.1}}
@@ -20,18 +23,19 @@
 {{/settextblock}}
 {{/each}}
 {{/devices}}
-{{setteleporter @root.E.S ../../CustomName .0}}
+{{setteleporter @root.E.S @root.Data.TeleporterName .0}}
 {{else}}
-{{#devices @root.E.S (concat 'Info:' CustomName '*')}}
+{{#devices @root.E.S (concat 'Info:' @root.Data.TeleporterName '*')}}
 {{#each .}}
 {{#settextblock .}}
-<align=center><size=10><sprite name="EntryForbidden_Bar"></size></align>
-<align=center><color=#d3d3d340><size=2>{{datetime}}</size></color></align>
+<align=center><size=20><sprite name="EntryForbidden_Bar"></size></align>
+<align=center><color=#d3d3d340><size=4>{{datetime}}</size></color></align>
 {{/settextblock}}
 {{/each}}
 {{/devices}}
 {{/readfile}}
 {{/split}}
 {{/each}}
+{{else}}
 {{/teleporters}}
 {{/test}}

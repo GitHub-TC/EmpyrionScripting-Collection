@@ -21,10 +21,11 @@
 {{#block @root.E.S .0 .1 .2}}
 {{#test Id in @root.Data.AntennaIds}}
 {{#scroll @root.Data.ScrollLines 1 5}}
-{{#entitiesbyname '*' 10000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
+{{#entitiesbyname '*' 20000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
 {{#sortedeach . 'Distance'}}
-{{#test Faction.Group in 'Alien,Zirax,Admin,NoFaction'}}
-{{format Name '<color=green>{0,-20}</color> '}}<indent=40%>
+{{#test Faction.Group in 'Alien,Zirax,Talon,Polaris,Kriel,Pirates,Admin,NoFaction'}}
+{{format Name '<color=green>{0,-20}</color> '}}<indent=25%>[
+{{~Faction.Group}}]<indent=40%></indent>
 {{~format Pos.X 'X:<color=red>{0,-5:0}</color> '}}</indent><indent=55%>
 {{~format Pos.Y 'Y:<color=red>{0,-5:0}</color> '}}</indent><indent=70%>
 {{~format Pos.Z 'Z:<color=red>{0,-5:0}</color> '}}</indent><indent=85%>

@@ -6,6 +6,9 @@ using Newtonsoft.Json;
 
 public class ModMain
 {
+    static int[] blocks;
+    static int[] devices;
+
     public static void Main (IScriptModData rootObject)
     {
         if (!(rootObject is IScriptSaveGameRootData root)) return;
@@ -14,7 +17,7 @@ public class ModMain
         root.CsRoot.GetBlockDevices<ILcd> (root.E.S, "Floor*")
             .ForEach (l =>
             {
-                var o = new StringBuilder ();
+                var output = new StringBuilder ();
                 try
                 {
                     var posOff = l.B.CustomName.Split(':').Last().Split(';');
@@ -24,17 +27,17 @@ public class ModMain
                     var size = Get(posOff, 3, "50%");
                     var flip = Get(posOff, 4) == "r";
 
-                    o.Append ($"<mspace={(l.B.Id==1400 ? 3 : 1)}.8m>");
-                    o.Append ($"<size={size}>");
-                    o.Append ("<line-height=70%>");
+                    output.Append ($"<mspace={(l.B.Id==1400 ? 3 : 1)}.8m>");
+                    output.Append ($"<size={size}>");
+                    output.Append ("<line-height=70%>");
 
                     var min = root.E.S.MinPos;
                     var max = root.E.S.MaxPos;
-                    var blk = root.Ids["BlockL" ].Split (',').Select (i => int.TryParse (i, out var ii) ? ii : 0);
-                    var eq  = root.Ids["DeviceL"].Split (',').Select (i => int.TryParse (i, out var ii) ? ii : 0);
-                    var c = "";
-                    var oc = "";
-                    var s = "";
+                    if(blocks  == null) blocks  = root.Ids["BlockL" ].Split (',').Select (i => int.TryParse (i, out var ii) ? ii : 0).ToArray();
+                    if(devices == null) devices = root.Ids["DeviceL"].Split (',').Select (i => int.TryParse (i, out var ii) ? ii : 0).ToArray();
+                    var color    = "";
+                    var oldColor = "";
+                    var blkChar  = "";
                     for (int x = flip ? max.x : min.x; flip ? x >= min.x : x <= max.x; x += flip ? -1 : +1)
                     {
                         for (int z = flip ? max.z : min.z; flip ? z >= min.z : z <= max.z; z += flip ? -1 : +1)
@@ -46,58 +49,53 @@ public class ModMain
 
                             if (x == lcdX && z == lcdZ)
                             {
-                                s = "☻";
-                                c = "red";
+                                blkChar = "☻";
+                                color = "red";
                             }
-                            else if (t.Contains ("Thrus")) s = "⛔";
+                            else if (t.Contains ("Thrus")) blkChar = "⛔";
                             else if (t.Contains ("Light") ||
                                 t.Contains ("Cons") ||
                                 t.Contains ("Force") ||
-                                t.Contains ("Door")) s = " ";
-                            else if (b.Id == 0) s = " ";
-                            else if (eq.Contains (b.Id))
+                                t.Contains ("Door")) blkChar = " ";
+                            else if (b.Id == 0) blkChar = " ";
+                            else if (devices.Contains (b.Id))
                             {
-                                s = "▣";
-                                c = "#99ccff";
+                                blkChar = "▣";
+                                color = "#99ccff";
                             }
-                            else if (blk.Contains (b.Id))
+                            else if (blocks.Contains (b.Id))
                             {
-                                int h = b.HitPoints;
-                                var d = b.Damage;
-                                c = "grey";
-                                if (d > 0) c = "yellow";
-                                if (d > (h * 9 / 10)) c = "red";
-                                s = "■";
+                                var hitPoints = b.HitPoints;
+                                var damage = b.Damage;
+                                color = "grey";
+                                if (damage > 0) color = "yellow";
+                                if (damage > (hitPoints * 9 / 10)) color = "red";
+                                blkChar = "■";
                             }
                             else
                             {
-                                s = "▪";
-                                c = "grey";
+                                blkChar = "▪";
+                                color = "grey";
                             }
-                            if (oc != c) o.Append ($"<color={oc=c}>");
-                            o.Append (s);
+                            if (oldColor != color) output.Append ($"<color={oldColor = color}>");
+                            output.Append (blkChar);
                         }
-                        o.AppendLine ();
+                        output.AppendLine ();
                     }
-                    o.AppendLine($"<color=red>☻</color> = You are here X:{lcdX} Y:{lcdY} Z:{lcdZ}");
-                    o.AppendLine($"<color=#99ccff>▣</color> = Device");
-                    o.AppendLine($"<color=grey>▪</color> = Unkown");
-                    o.AppendLine($"■ = Block");
+                    output.AppendLine($"<color=red>☻</color> = You are here X:{lcdX} Y:{lcdY} Z:{lcdZ}");
+                    output.AppendLine($"<color=#99ccff>▣</color> = Device");
+                    output.AppendLine($"<color=grey>▪</color> = Unkown");
+                    output.AppendLine($"■ = Block");
                 }
                 catch (Exception e)
                 {
-                    o.Append (e);
+                    output.Append (e);
                 }
-                l.D.SetText (o.ToString ());
+                l.D.SetText (output.ToString ());
             });
 
     }
 
     private static string Get (string[] a, int pos, string def = "") => a != null && a.Length <= pos ? def : a[pos];
     private static int GetInt (string[] a, int pos) => int.TryParse (Get(a, pos), out var i) ? i : 0;
-    
-    private static void WriteTo (ILcd[] lcds, string text)
-    {
-        lcds.ForEach (L => L.SetText ($"{text}\n{L.GetText()}"));
-    }
 }

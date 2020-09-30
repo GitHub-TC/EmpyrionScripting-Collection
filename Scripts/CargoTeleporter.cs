@@ -14,12 +14,12 @@ public class ModMain
 
         root.E.S
             .AllCustomDeviceNames
-            .GetUniqueNames ("CargoOut@*")
+            .GetUniqueNames ("*CargoOut@*")
             .ForEach (cargoOutContainerName =>
             {
                 var container = root.CsRoot.Devices (root.E.S, cargoOutContainerName).Where(C => C.Device is ContainerData).FirstOrDefault ();
                 if (container == null) return;
-                if (!int.TryParse (cargoOutContainerName.Substring ("CargoOut@".Length), out var targetEntityId))
+                if (!int.TryParse (cargoOutContainerName.Substring (cargoOutContainerName.IndexOf('@') + 1), out var targetEntityId))
                 {
                     WriteTo (infoOutLcds, $"CargoOut@[ID] id is not a number");
                     return;
@@ -59,7 +59,7 @@ public class ModMain
 
         root.E.S
             .AllCustomDeviceNames
-            .GetUniqueNames ("CargoIn")
+            .GetUniqueNames ("*CargoIn*")
             .ForEach (cargoInContainerName =>
             {
                 var container = root.CsRoot.Devices(root.E.S, cargoInContainerName).Where(C => C.Device is ContainerData).FirstOrDefault();
@@ -108,7 +108,7 @@ public class ModMain
                     {
                         byte index = 0;
                         nativeContainer.SetContent(items
-                            .Select(i => new ItemStack(i.id, i.count) { slotIdx = index++, decay = i.decay, ammo = i.ammo } ).ToList());
+                            .Select(i => new ItemStack(i.id, i.count) { slotIdx = index++, decay = i.decay, ammo = i.ammo }).ToList());
                     }
                 });
             });

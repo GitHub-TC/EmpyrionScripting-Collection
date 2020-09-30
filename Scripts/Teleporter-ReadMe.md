@@ -9,7 +9,7 @@ Auf der Basis bekommt der Teleporter nun die Bezeichnung Beam-T1@17 und auf dem 
 
 Der Name T1 sollte übereinstimmen denn sonst nimmt sich das Spiel irgendeinen Teleporter der auf dem Ziel verbaut ist.
 
-Zur Information kann man ein LCD platzieren welches mit der Bezeichnung "Info:\[Bezeichnung des Teleporter\]" beginnt. Im Beispiel also auf der Basis Info:Beam-T1@17
+Zur Information kann man ein LCD platzieren welches mit der Bezeichnung "Info:\[Ziel des Teleporters\]" beginnt. Im Beispiel also auf der Basis Info:Beam-T1
 
 Der Inhalt des LCD ist nicht modifizierbar und zeigt den Namen, Typ und Playfield des Ziels an. Außerdem die Uhrzeit der letzten Aktualisierung dieses Teleporters.
 

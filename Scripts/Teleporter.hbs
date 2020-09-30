@@ -15,7 +15,7 @@
 {{datetime}}
 {{/writefile}}
 {{#readfile @root.MainScriptPath (concat '..\\Teleporter\\Fac-' @root.E.Faction.Id '\\Data-' @root.Data.TeleporterTarget '-' @root.Data.TeleporterTargetId '.txt')}}
-{{#devices @root.E.S (concat 'Info:' @root.Data.TeleporterName '*')}}
+{{#devices @root.E.S (concat 'Info:' @root.Data.TeleporterTarget '*')}}
 {{#each .}}
 {{#settextblock .}}
 <align=center>{{../../../.1}}
@@ -25,7 +25,7 @@
 {{/devices}}
 {{setteleporter @root.E.S @root.Data.TeleporterName .0}}
 {{else}}
-{{#devices @root.E.S (concat 'Info:' @root.Data.TeleporterName '*')}}
+{{#devices @root.E.S (concat 'Info:' @root.Data.TeleporterTarget '*')}}
 {{#each .}}
 {{#settextblock .}}
 <align=center><size=20><sprite name="EntryForbidden_Bar"></size></align>

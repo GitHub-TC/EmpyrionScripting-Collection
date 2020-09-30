@@ -6,3 +6,7 @@ ServerInfos
 PlayfieldInfos
 CsCompilerConfiguration.json
 CargoTeleport/**
+CustomDLLs/**
+ItemStructureTree.ecf
+Scripts/EgsEsExtensionRun.cs
+*.bak

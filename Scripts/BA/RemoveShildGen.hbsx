@@ -1,4 +1,0 @@
-{{test E.Faction.Group eq 'Zirax'}}
-{{#replaceblocks @root.E '1813' 0}}
-{{/replaceblocks}}
-{{/test}}

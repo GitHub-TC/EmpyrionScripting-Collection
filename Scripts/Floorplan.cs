@@ -22,7 +22,7 @@ public class ModMain
                 try
                 {
                     if (DateTime.TryParseExact(l.D.GetText().Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries).LastOrDefault(), 
-                        "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out var lastUpdate) &&
+                        "dd.MM.yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out var lastUpdate) &&
                         (DateTime.Now - lastUpdate).TotalSeconds < 60) return;
                 }
                 catch { }

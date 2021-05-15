@@ -1,7 +1,0 @@
-{{#devices E.S 'SendData'}}
-{{#writefile @root.MainScriptPath (concat '..\\DataTransfer\\Fac-' @root.E.Faction.Id '\\Data-' @root.E.Id '.txt')}}
-{{#gettext .0}}
-{{.}}
-{{/gettext}}
-{{/writefile}}
-{{/devices}}

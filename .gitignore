@@ -8,5 +8,7 @@ CsCompilerConfiguration.json
 CargoTeleport/**
 CustomDLLs/**
 ItemStructureTree.ecf
+NameIdMapping.json
 Scripts/EgsEsExtensionRun.cs
 *.bak
+CsCompilerConfiguration-EGS.json

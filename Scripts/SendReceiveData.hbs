@@ -1,15 +1,19 @@
-{{#devices E.S 'SendData*'}}
-{{#writefile @root.MainScriptPath (concat '..\\DataTransfer\\Fac-' @root.E.Faction.Id '\\Data-' @root.E.Id '.txt')}}
-{{#gettext .0}}
+{{#devices E.S 'SendData-*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{#writefile @root.MainScriptPath (concat '..\\DataTransfer\\Fac-' @root.E.Faction.Id '\\Data-' @root.E.Id .1 '.txt')}}
+{{#gettext ../../.}}
 {{.}}
 {{/gettext}}
 {{/writefile}}
+{{/split}}
+{{/each}}
 {{/devices}}
 
 {{#devices @root.E.S 'ReceiveData-*'}}
 {{#each .}}
 {{#split CustomName '-'}}
-{{#readfile @root.MainScriptPath (concat '..\\DataTransfer\\Fac-' @root.E.Faction.Id '\\Data-' .1 '.txt')}}
+{{#readfile @root.MainScriptPath (concat '..\\DataTransfer\\Fac-' @root.E.Faction.Id '\\Data-' .1 .2 '.txt')}}
 {{settext ../../. (concat . '\n')}}
 {{/readfile}}
 {{/split}}

@@ -1,0 +1,54 @@
+{{set 'AntennaIds' '1365,1877,1878,1879,1880,1880,1881,1882,1883,1884,262'}}
+ 
+{{#devices @root.E.S 'NearEnemy=*'}}
+{{#each .}}
+{{#split CustomName '='}}
+{{set 'RadarPos' .1}}
+{{#if .2}}
+{{set 'Size' .2}}
+{{else}}
+{{set 'Size' '100%'}}
+{{/if}}
+{{#if .3}}
+{{set 'ScrollLines' .3}}
+{{else}}
+{{set 'ScrollLines' '100'}}
+{{/if}}
+{{/split}}
+{{#settextblock .}}
+<size={{@root.Data.Size}}>Near enemy scan:
+{{#split @root.Data.RadarPos ','}}
+{{#block @root.E.S .0 .1 .2}}
+{{#test Id in @root.Data.AntennaIds}}
+{{#scroll @root.Data.ScrollLines 1 5}}
+{{#entitiesbyname '*' 2000 'BA,CV,SV,HV,EnemyDrone,TroopTransport,Proxy'}}
+{{#sortedeach . 'Distance'}}
+{{#test Faction.Group in 'Alien,Zirax,Talon,Polaris,Kriel,Pirates,Admin,NoFaction,UCH'}}
+{{format Name '<color=green>{0,-20}</color> '}}<indent=25%>[
+{{~Faction.Group}}]<indent=40%></indent>
+{{~format Pos.X 'X:<color=red>{0,-5:0}</color> '}}</indent><indent=55%>
+{{~format Pos.Y 'Y:<color=red>{0,-5:0}</color> '}}</indent><indent=70%>
+{{~format Pos.Z 'Z:<color=red>{0,-5:0}</color> '}}</indent><indent=85%>
+{{~format Distance '<color=yellow>△={0:0}</color>'}}</indent>
+{{/test}}
+{{/sortedeach}}
+{{/entitiesbyname}}
+{{/scroll}}
+{{else}}
+No Antenna found at {{@root.Data.RadarPos}}
+  
+{{#split @root.Data.AntennaIds ','}}
+{{#each .}}
+({{.}}) {{i18n . 'English'}} / {{i18n . 'Deutsch'}}
+{{/each}}
+{{/split}}
+{{/test}}
+{{/block}}
+{{/split}}
+<color=#33888890>Current Position: {{@root.E.Pos}}
+<color=#88888840>Time on board: {{datetime}}
+{{@root.Version}}</color>
+</size>
+{{/settextblock}}
+{{/each}}
+{{/devices}}

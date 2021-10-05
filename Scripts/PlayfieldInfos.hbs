@@ -1,15 +1,25 @@
-{{#devices @root.E.S 'PlayfieldInfosGer*'}}
+{{#devices @root.E.S 'PlayfieldGer*'}}
 {{#each .}}
-{{#readfile '..\PlayfieldInfos\' (concat @root.P.Name 'Ger.txt')}}
+{{#split CustomName '-'}}
+{{#if .1}}
+{{setfontsize ../. .1}}
+{{/if}}
+{{/split}}
+{{#readfile '..\Infos\' (concat @root.P.Name 'Ger.txt')}}
 {{settext ../. (concat . '\n')}}
 {{else}}
 {{settext ../. (concat 'Leider liegen keine Reiseinformationen für ' @root.P.Name ' vor.')}}
 {{/readfile}}
 {{/each}}
 {{/devices}}
-{{#devices @root.E.S 'PlayfieldInfosEng*'}}
+{{#devices @root.E.S 'PlayfieldEng*'}}
 {{#each .}}
-{{#readfile '..\PlayfieldInfos\' (concat @root.P.Name 'Eng.txt')}}
+{{#split CustomName '-'}}
+{{#if .1}}
+{{setfontsize ../. .1}}
+{{/if}}
+{{/split}}
+{{#readfile '..\Infos\' (concat @root.P.Name 'Eng.txt')}}
 {{settext ../. (concat . '\n')}}
 {{else}}
 {{settext . (concat 'Unfortunately, there is no travel information for ' @ root.P.Name)}}

@@ -2,8 +2,7 @@ Configuration.json
 Teleporter/**
 DataTransfer
 ScriptTracking
-ServerInfos
-PlayfieldInfos
+Infos
 CsCompilerConfiguration.json
 CargoTeleport/**
 CustomDLLs/**

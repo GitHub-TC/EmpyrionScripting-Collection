@@ -1,5 +1,5 @@
-{{#readfile '..\ServerInfos' 'ServerInfosGer.txt'}}
-{{#devices @root.E.S 'ServerInfosGer*'}}
+{{#readfile '..\Infos' 'ServerInfosGer.txt'}}
+{{#devices @root.E.S 'ServerGer*'}}
 {{#each .}}
 {{#split CustomName '-'}}
 {{#if .1}}
@@ -9,9 +9,21 @@
 {{settext . (concat ../../. '\n')}}
 {{/each}}
 {{/devices}}
+{{else}}
+{{#devices @root.E.S 'ServerGer*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{#if .1}}
+{{setfontsize ../. .1}}
+{{/if}}
+{{/split}}
+{{settext . 'Es liegen leider keine Serverinfos vor.'}}
+{{/each}}
+{{/devices}}
 {{/readfile}}
-{{#readfile '..\ServerInfos' 'ServerInfosEng.txt'}}
-{{#devices @root.E.S 'ServerInfosEng*'}}
+
+{{#readfile '..\Infos' 'ServerInfosEng.txt'}}
+{{#devices @root.E.S 'ServerEng*'}}
 {{#each .}}
 {{#split CustomName '-'}}
 {{#if .1}}
@@ -21,4 +33,15 @@
 {{settext . (concat ../../. '\n')}}
 {{/each}}
 {{/devices}}
+{{#devices @root.E.S 'ServerEng*'}}
+{{#each .}}
+{{#split CustomName '-'}}
+{{#if .1}}
+{{setfontsize ../. .1}}
+{{/if}}
+{{/split}}
+{{settext . 'Sorry, there is no server info available.'}}
+{{/each}}
+{{/devices}}
 {{/readfile}}
+

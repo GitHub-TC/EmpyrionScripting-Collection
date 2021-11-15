@@ -33,6 +33,7 @@
 {{settext . (concat ../../. '\n')}}
 {{/each}}
 {{/devices}}
+{{else}}
 {{#devices @root.E.S 'ServerEng*'}}
 {{#each .}}
 {{#split CustomName '-'}}

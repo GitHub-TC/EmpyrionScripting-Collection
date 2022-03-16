@@ -8,3 +8,4 @@ Der Transfer erfolgt immer von "CargoOut@..." nach "CargoIn"
 
 Infoformationen zum Transfer erhält man über LCDs welche mit den Namen "CargoOutInfo" bzw. "CargoInInfo" beginnen.
 
+![](../images/cargoTransport.png)

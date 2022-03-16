@@ -8,6 +8,5 @@ CargoTeleport/**
 CustomDLLs/**
 ItemStructureTree.ecf
 NameIdMapping.json
-Scripts/EgsEsExtensionRun.cs
+**Egs**
 *.bak
-CsCompilerConfiguration-EGS.json

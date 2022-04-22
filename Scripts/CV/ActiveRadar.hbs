@@ -23,7 +23,7 @@
 {{#scroll @root.Data.ScrollLines 1 5}}
 {{#entitiesbyname '*' 50000 'Ast*'}}
 {{#sortedeach . 'Distance'}}
-{{format Name '<color=green>{0,-20}</color> '}}<indent=40%>
+{{format (i18n Name) '<color=green>{0,-20}</color> '}}<indent=40%>
 {{~format Pos.X 'X:<color=red>{0,-5:0}</color> '}}</indent><indent=55%>
 {{~format Pos.Y 'Y:<color=red>{0,-5:0}</color> '}}</indent><indent=70%>
 {{~format Pos.Z 'Z:<color=red>{0,-5:0}</color> '}}</indent><indent=85%>

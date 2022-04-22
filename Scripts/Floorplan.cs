@@ -51,9 +51,9 @@ public class ModMain
 
                     var min = root.E.S.MinPos;
                     var max = root.E.S.MaxPos;
-                    if(blocks  == null) blocks  = ToIntArray(root.Ids["BlockL" ]);
-                    if(devices == null) devices = ToIntArray(root.Ids["DeviceL"]);
-                    if(weapons == null) weapons = ToIntArray(root.Ids["WeaponHV"] + root.Ids["WeaponSV"] + root.Ids["WeaponCV"] + root.Ids["WeaponBA"]);
+                    if(blocks  == null) blocks  = root.Ids == null ? new int[]{} : ToIntArray(root.Ids["BlockL" ]);
+                    if(devices == null) devices = root.Ids == null ? new int[]{} : ToIntArray(root.Ids["DeviceL"]);
+                    if(weapons == null) weapons = root.Ids == null ? new int[]{} : ToIntArray(root.Ids["WeaponHV"] + root.Ids["WeaponSV"] + root.Ids["WeaponCV"] + root.Ids["WeaponBA"]);
                     var color    = "";
                     var oldColor = "";
                     var blkChar  = "";

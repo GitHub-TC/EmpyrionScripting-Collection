@@ -117,6 +117,9 @@ public class ModMain
 
     private static void WriteTo (ILcd[] lcds, string text)
     {
-        lcds.ForEach (L => L.SetText ($"{text}\n{L.GetText()}"));
+        lcds.ForEach (L => {
+            var oldText = L.GetText();
+            L.SetText ($"{text}\n{oldText.Substring(0, Math.Min(2000, oldText.Length))}");
+        });
     }
 }

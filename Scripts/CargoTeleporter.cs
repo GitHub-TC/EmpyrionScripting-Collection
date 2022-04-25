@@ -21,7 +21,7 @@ public class ModMain
                 if (container == null) return;
                 if (!int.TryParse (cargoOutContainerName.Substring (cargoOutContainerName.IndexOf('@') + 1), out var targetEntityId))
                 {
-                    WriteTo (infoOutLcds, $"CargoOut@[ID] id is not a number");
+                    WriteTo (root, $"CargoOut@[ID] id is not a number");
                     return;
                 }
 
@@ -29,7 +29,7 @@ public class ModMain
 
                 if (!File.Exists (cargoTargetFileName))
                 {
-                    WriteTo (infoOutLcds, $"CargoIn in [ID] not ready");
+                    WriteTo (root, $"CargoIn in [ID] not ready");
                     return;
                 }
 
@@ -44,18 +44,16 @@ public class ModMain
                         try
                         {
                             File.AppendAllText (cargoTargetFileName, JsonConvert.SerializeObject (i) + "\n");
-                            WriteTo (infoOutLcds, $"Transfer: Item:[{i.id}] {i.count} {root.CsRoot.I18n(i.id)}");
+                            WriteTo (root, $"[{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}");
                         }
                         catch { 
                             failedItems.Add (i); 
-                            WriteTo (infoOutLcds, $"Transfer failed: Item:[{i.id}] {i.count} {root.CsRoot.I18n(i.id)}");
+                            WriteTo (root, $"failed: [{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}");
                         }
                     });
                     nativeContainer.SetContent (failedItems);
                 });
             });
-
-        var infoInLcds = root.CsRoot.GetDevices<ILcd> (root.CsRoot.Devices (root.E.S, "CargoInInfo*"));
 
         root.E.S
             .AllCustomDeviceNames
@@ -90,7 +88,7 @@ public class ModMain
                                     var item = JsonConvert.DeserializeObject<ItemStack> (itemLine);
                                     items.Add (item);
                                     itemsAdded = true;
-                                    WriteTo (infoInLcds, $"Transfer: Item:[{item.id}] {item.count} {root.CsRoot.I18n(item.id)}");
+                                    WriteTo (root, $"[{item.id}] {item.count}: {root.CsRoot.I18n(item.id)}");
                                 }
                                 else remainLines.Add (itemLine);
                             }
@@ -115,11 +113,20 @@ public class ModMain
 
     }
 
-    private static void WriteTo (ILcd[] lcds, string text)
+    private static void WriteTo (IScriptSaveGameRootData root, string text)
     {
-        lcds.ForEach (L => {
-            var oldText = L.GetText();
-            L.SetText ($"{text}\n{oldText.Substring(0, Math.Min(2000, oldText.Length))}");
+        root.CsRoot.Devices (root.E.S, "CargoInInfo*").ForEach(D => {
+            root.CsRoot.GetDevices<ILcd>(D).ForEach(L => {
+                var oldText = L.GetText();
+
+                var attrPos = D.CustomName.IndexOf('[');
+                if(attrPos > 0){
+                    var attrEndPos = D.CustomName.IndexOfAny(new[] { ']', ';' }, attrPos);
+                    if (attrEndPos > 0) text = $"<size={D.CustomName.Substring(attrPos + 1, attrEndPos - attrPos - 1)}>{text}</size>"; 
+                }
+
+                L.SetText ($"{text}\n{oldText.Substring(0, Math.Min(2000, oldText.Length))}");
+            });
         });
     }
 }

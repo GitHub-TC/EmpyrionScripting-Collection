@@ -4,4 +4,4 @@
 + A brunch of savegame and other scripts
 
 ## Install
-[EGS]\Saves\Games\[Your Savegamename]\Mods\EmpyrionScripting\Scripts
+[EGS]\Saves\Games\[Your Savegamename]\Mods\EmpyrionScripting

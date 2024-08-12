@@ -10,3 +10,5 @@ ItemStructureTree.ecf
 NameIdMapping.json
 **Egs**
 *.bak
+/IdIconMapping.json
+/.vs

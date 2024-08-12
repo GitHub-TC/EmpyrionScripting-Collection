@@ -1,6 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using Eleon.Modding;
+using EmpyrionScripting.CustomHelpers;
+using EmpyrionScripting.DataWrapper;
+using EmpyrionScripting.Interface;
 using Newtonsoft.Json;
 
 public class ModMain
@@ -9,8 +14,6 @@ public class ModMain
     {
         if (!(rootObject is IScriptSaveGameRootData root)) return;
         if (root.E.Faction.Id == 0) return;
-
-        var infoOutLcds = root.CsRoot.GetDevices<ILcd> (root.CsRoot.Devices (root.E.S, "CargoOutInfo*"));
 
         root.E.S
             .AllCustomDeviceNames
@@ -21,7 +24,7 @@ public class ModMain
                 if (container == null) return;
                 if (!int.TryParse (cargoOutContainerName.Substring (cargoOutContainerName.IndexOf('@') + 1), out var targetEntityId))
                 {
-                    WriteTo (root, $"CargoOut@[ID] id is not a number");
+                    WriteTo (root, $"CargoOut@[ID] id is not a number", "CargoOutInfo*");
                     return;
                 }
 
@@ -29,7 +32,7 @@ public class ModMain
 
                 if (!File.Exists (cargoTargetFileName))
                 {
-                    WriteTo (root, $"CargoIn in [ID] not ready");
+                    WriteTo (root, $"CargoIn in [ID] not ready", "CargoOutInfo*");
                     return;
                 }
 
@@ -44,11 +47,11 @@ public class ModMain
                         try
                         {
                             File.AppendAllText (cargoTargetFileName, JsonConvert.SerializeObject (i) + "\n");
-                            WriteTo (root, $"[{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}");
+                            WriteTo (root, $"[{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
                         }
                         catch { 
                             failedItems.Add (i); 
-                            WriteTo (root, $"failed: [{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}");
+                            WriteTo (root, $"failed: [{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
                         }
                     });
                     nativeContainer.SetContent (failedItems);
@@ -88,7 +91,7 @@ public class ModMain
                                     var item = JsonConvert.DeserializeObject<ItemStack> (itemLine);
                                     items.Add (item);
                                     itemsAdded = true;
-                                    WriteTo (root, $"[{item.id}] {item.count}: {root.CsRoot.I18n(item.id)}");
+                                    WriteTo (root, $"[{item.id}] {item.count}: {root.CsRoot.I18n(item.id)}", "CargoInInfo*");
                                 }
                                 else remainLines.Add (itemLine);
                             }
@@ -113,9 +116,9 @@ public class ModMain
 
     }
 
-    private static void WriteTo (IScriptSaveGameRootData root, string text)
+    private static void WriteTo (IScriptSaveGameRootData root, string text, string lcdNames)
     {
-        root.CsRoot.Devices (root.E.S, "CargoInInfo*").ForEach(D => {
+        root.CsRoot.Devices (root.E.S, lcdNames).ForEach(D => {
             root.CsRoot.GetDevices<ILcd>(D).ForEach(L => {
                 var oldText = L.GetText();
 

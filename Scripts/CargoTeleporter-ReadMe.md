@@ -2,6 +2,7 @@
 
 1. Beide Strukturen müssen in der selben Fraktion sein
 1. Eine Box/Container mit der Id "CargoOut@\[ZielID\]" beim Versender
+1. Eine Box/Container mit der Id "CargoOut@\[ZielID\]#\[IgnoreItemID, ...\]" beim Versender
 1. An der Zielstruktur mit der Id ID eine Boc/Container mit dem Namen "CargoIn"
 
 Der Transfer erfolgt immer von "CargoOut@..." nach "CargoIn"

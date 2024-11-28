@@ -22,6 +22,19 @@ public class ModMain
             {
                 var container = root.CsRoot.Devices (root.E.S, cargoOutContainerName).Where(C => C.Device is ContainerData).FirstOrDefault ();
                 if (container == null) return;
+
+                var nameParts = cargoOutContainerName.Split('#');
+                var ignoreIDs = new HashSet<int>();
+                if (nameParts.Length > 1)
+                {
+                    ignoreIDs = nameParts[1]
+                        .Split(',', ';')
+                        .Select(i => int.TryParse(i, out int no) ? no : 0)
+                        .Where(n => n != 0)
+                        .ToHashSet();
+                    cargoOutContainerName = nameParts[0];
+                }
+
                 if (!int.TryParse (cargoOutContainerName.Substring (cargoOutContainerName.IndexOf('@') + 1), out var targetEntityId))
                 {
                     WriteTo (root, $"CargoOut@[ID] id is not a number", "CargoOutInfo*");
@@ -44,17 +57,26 @@ public class ModMain
                     var failedItems = new List<ItemStack> ();
                     items.ForEach (i =>
                     {
-                        try
+                        if (ignoreIDs.Contains(i.id))
                         {
-                            File.AppendAllText (cargoTargetFileName, JsonConvert.SerializeObject (i) + "\n");
-                            WriteTo (root, $"[{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
+                            failedItems.Add(i);
+                            WriteTo(root, $"ignored: [{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
                         }
-                        catch { 
-                            failedItems.Add (i); 
-                            WriteTo (root, $"failed: [{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
+                        else
+                        {
+                            try
+                            {
+                                File.AppendAllText(cargoTargetFileName, JsonConvert.SerializeObject(i) + "\n");
+                                WriteTo(root, $"[{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
+                            }
+                            catch
+                            {
+                                failedItems.Add(i);
+                                WriteTo(root, $"failed: [{i.id}] {i.count}: {root.CsRoot.I18n(i.id)}", "CargoOutInfo*");
+                            }
                         }
                     });
-                    nativeContainer.SetContent (failedItems);
+                    nativeContainer.SetContent (failedItems.UniqueSlots());
                 });
             });
 
@@ -86,7 +108,7 @@ public class ModMain
                             {
                                 var itemLine = file.ReadLine ();
                                 if(string.IsNullOrEmpty(itemLine)) break;
-                                else if (items.Count < 64)
+                                else if (items.Count < root.GetMaxSlots(container.Id))
                                 {
                                     var item = JsonConvert.DeserializeObject<ItemStack> (itemLine);
                                     items.Add (item);
